@@ -5,5 +5,5 @@ class AuthState with _$AuthState {
   factory AuthState.notAuthorized() = _AuthStateNotAuthorized;
   factory AuthState.authorized(UserEntity userEntity) = _AuthStateAuthorized;
   factory AuthState.waiting() = _AuthStateWaiting;
-  factory AuthState.error() = _AuthStateError;
+  factory AuthState.error(String error) = _AuthStateError;
 }
