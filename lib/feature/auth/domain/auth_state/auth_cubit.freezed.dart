@@ -21,7 +21,7 @@ mixin _$AuthState {
     required TResult Function() notAuthorized,
     required TResult Function(UserEntity userEntity) authorized,
     required TResult Function() waiting,
-    required TResult Function(String error) error,
+    required TResult Function(dynamic error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +29,7 @@ mixin _$AuthState {
     TResult? Function()? notAuthorized,
     TResult? Function(UserEntity userEntity)? authorized,
     TResult? Function()? waiting,
-    TResult? Function(String error)? error,
+    TResult? Function(dynamic error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +37,7 @@ mixin _$AuthState {
     TResult Function()? notAuthorized,
     TResult Function(UserEntity userEntity)? authorized,
     TResult Function()? waiting,
-    TResult Function(String error)? error,
+    TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -127,7 +127,7 @@ class _$_AuthStateNotAuthorized implements _AuthStateNotAuthorized {
     required TResult Function() notAuthorized,
     required TResult Function(UserEntity userEntity) authorized,
     required TResult Function() waiting,
-    required TResult Function(String error) error,
+    required TResult Function(dynamic error) error,
   }) {
     return notAuthorized();
   }
@@ -138,7 +138,7 @@ class _$_AuthStateNotAuthorized implements _AuthStateNotAuthorized {
     TResult? Function()? notAuthorized,
     TResult? Function(UserEntity userEntity)? authorized,
     TResult? Function()? waiting,
-    TResult? Function(String error)? error,
+    TResult? Function(dynamic error)? error,
   }) {
     return notAuthorized?.call();
   }
@@ -149,7 +149,7 @@ class _$_AuthStateNotAuthorized implements _AuthStateNotAuthorized {
     TResult Function()? notAuthorized,
     TResult Function(UserEntity userEntity)? authorized,
     TResult Function()? waiting,
-    TResult Function(String error)? error,
+    TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if (notAuthorized != null) {
@@ -279,7 +279,7 @@ class _$_AuthStateAuthorized implements _AuthStateAuthorized {
     required TResult Function() notAuthorized,
     required TResult Function(UserEntity userEntity) authorized,
     required TResult Function() waiting,
-    required TResult Function(String error) error,
+    required TResult Function(dynamic error) error,
   }) {
     return authorized(userEntity);
   }
@@ -290,7 +290,7 @@ class _$_AuthStateAuthorized implements _AuthStateAuthorized {
     TResult? Function()? notAuthorized,
     TResult? Function(UserEntity userEntity)? authorized,
     TResult? Function()? waiting,
-    TResult? Function(String error)? error,
+    TResult? Function(dynamic error)? error,
   }) {
     return authorized?.call(userEntity);
   }
@@ -301,7 +301,7 @@ class _$_AuthStateAuthorized implements _AuthStateAuthorized {
     TResult Function()? notAuthorized,
     TResult Function(UserEntity userEntity)? authorized,
     TResult Function()? waiting,
-    TResult Function(String error)? error,
+    TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if (authorized != null) {
@@ -399,7 +399,7 @@ class _$_AuthStateWaiting implements _AuthStateWaiting {
     required TResult Function() notAuthorized,
     required TResult Function(UserEntity userEntity) authorized,
     required TResult Function() waiting,
-    required TResult Function(String error) error,
+    required TResult Function(dynamic error) error,
   }) {
     return waiting();
   }
@@ -410,7 +410,7 @@ class _$_AuthStateWaiting implements _AuthStateWaiting {
     TResult? Function()? notAuthorized,
     TResult? Function(UserEntity userEntity)? authorized,
     TResult? Function()? waiting,
-    TResult? Function(String error)? error,
+    TResult? Function(dynamic error)? error,
   }) {
     return waiting?.call();
   }
@@ -421,7 +421,7 @@ class _$_AuthStateWaiting implements _AuthStateWaiting {
     TResult Function()? notAuthorized,
     TResult Function(UserEntity userEntity)? authorized,
     TResult Function()? waiting,
-    TResult Function(String error)? error,
+    TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if (waiting != null) {
@@ -478,7 +478,7 @@ abstract class _$$_AuthStateErrorCopyWith<$Res> {
           _$_AuthStateError value, $Res Function(_$_AuthStateError) then) =
       __$$_AuthStateErrorCopyWithImpl<$Res>;
   @useResult
-  $Res call({String error});
+  $Res call({dynamic error});
 }
 
 /// @nodoc
@@ -498,7 +498,7 @@ class __$$_AuthStateErrorCopyWithImpl<$Res>
       null == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
-              as String,
+              as dynamic,
     ));
   }
 }
@@ -509,7 +509,7 @@ class _$_AuthStateError implements _AuthStateError {
   _$_AuthStateError(this.error);
 
   @override
-  final String error;
+  final dynamic error;
 
   @override
   String toString() {
@@ -521,11 +521,12 @@ class _$_AuthStateError implements _AuthStateError {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AuthStateError &&
-            (identical(other.error, error) || other.error == error));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, error);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   @JsonKey(ignore: true)
   @override
@@ -539,7 +540,7 @@ class _$_AuthStateError implements _AuthStateError {
     required TResult Function() notAuthorized,
     required TResult Function(UserEntity userEntity) authorized,
     required TResult Function() waiting,
-    required TResult Function(String error) error,
+    required TResult Function(dynamic error) error,
   }) {
     return error(this.error);
   }
@@ -550,7 +551,7 @@ class _$_AuthStateError implements _AuthStateError {
     TResult? Function()? notAuthorized,
     TResult? Function(UserEntity userEntity)? authorized,
     TResult? Function()? waiting,
-    TResult? Function(String error)? error,
+    TResult? Function(dynamic error)? error,
   }) {
     return error?.call(this.error);
   }
@@ -561,7 +562,7 @@ class _$_AuthStateError implements _AuthStateError {
     TResult Function()? notAuthorized,
     TResult Function(UserEntity userEntity)? authorized,
     TResult Function()? waiting,
-    TResult Function(String error)? error,
+    TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -609,9 +610,9 @@ class _$_AuthStateError implements _AuthStateError {
 }
 
 abstract class _AuthStateError implements AuthState {
-  factory _AuthStateError(final String error) = _$_AuthStateError;
+  factory _AuthStateError(final dynamic error) = _$_AuthStateError;
 
-  String get error;
+  dynamic get error;
   @JsonKey(ignore: true)
   _$$_AuthStateErrorCopyWith<_$_AuthStateError> get copyWith =>
       throw _privateConstructorUsedError;
