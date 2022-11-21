@@ -27,6 +27,7 @@ class MockAuthRepository implements AuthRepository {
   @override
   Future signIn({required String password, required String username}) {
     return Future.delayed(const Duration(seconds: 2), () {
+      throw Exception('Text');
       return UserEntity(
         email: 'email',
         username: username,

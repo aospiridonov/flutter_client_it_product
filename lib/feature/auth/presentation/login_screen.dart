@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_button.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_field.dart';
+import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -37,7 +39,7 @@ class LoginScreen extends StatelessWidget {
                 AppTextButton(
                   onPressed: () {
                     if (formKey.currentState?.validate() == true) {
-                      print('Ok');
+                      _onTapToSignIn(context.read<AuthCubit>());
                     }
                   },
                   text: 'Sign In',
@@ -59,4 +61,9 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  void _onTapToSignIn(AuthCubit authCubit) => authCubit.signIn(
+        username: controllerLogin.text,
+        password: controllerPassword.text,
+      );
 }
