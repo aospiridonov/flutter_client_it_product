@@ -2,11 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'auth_state.dart';
-part 'auth_cubit.freezed.dart';
 
-class AuthCubit extends Cubit<AuthState> {
+part 'auth_cubit.freezed.dart';
+part 'auth_cubit.g.dart';
+
+class AuthCubit extends HydratedCubit<AuthState> {
   AuthCubit(this.authRepository) : super(AuthState.notAuthorized());
 
   final AuthRepository authRepository;
@@ -40,5 +43,25 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthState.error(error));
       rethrow;
     }
+  }
+
+  void logOut() => emit(AuthState.notAuthorized());
+
+  @override
+  AuthState? fromJson(Map<String, dynamic> json) {
+    final state = AuthState.fromJson(json);
+    return state.whenOrNull(
+      authorized: (userEntity) => AuthState.authorized(userEntity),
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(AuthState state) {
+    return state
+            .whenOrNull(
+              authorized: (userEntity) => AuthState.authorized(userEntity),
+            )
+            ?.toJson() ??
+        AuthState.notAuthorized().toJson();
   }
 }
