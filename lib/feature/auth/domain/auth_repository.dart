@@ -22,5 +22,5 @@ abstract class AuthRepository {
     required String newPassword,
   });
 
-  Future<dynamic> refreshToken({required String refreshToken});
+  Future<dynamic> refreshToken({String? refreshToken});
 }

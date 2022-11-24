@@ -11,16 +11,28 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('MainScreen'),
-        actions: [
-          IconButton(
-            onPressed: () => context.read<AuthCubit>().logOut(),
-            icon: const Icon(Icons.exit_to_app),
-          )
-        ],
-      ),
-      body: Center(child: Text(userEntity.username)),
-    );
+        appBar: AppBar(
+          title: const Text('MainScreen'),
+          actions: [
+            IconButton(
+              onPressed: () => context.read<AuthCubit>().logOut(),
+              icon: const Icon(Icons.exit_to_app),
+            )
+          ],
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('username: ${userEntity.username}'),
+            const SizedBox(height: 10),
+            Text('accessToken: ${userEntity.accessToken}'),
+            const SizedBox(height: 10),
+            Text('refreshToken: ${userEntity.refreshToken}'),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => context.read<AuthCubit>().refreshToken(),
+          child: const Icon(Icons.refresh),
+        ));
   }
 }
