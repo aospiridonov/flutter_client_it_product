@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
+import 'package:flutter_client_it_product/feature/auth/presentation/user_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key, required this.userEntity}) : super(key: key);
@@ -15,20 +16,19 @@ class MainScreen extends StatelessWidget {
           title: const Text('MainScreen'),
           actions: [
             IconButton(
-              onPressed: () => context.read<AuthCubit>().logOut(),
-              icon: const Icon(Icons.exit_to_app),
-            )
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserScreen(),
+                ),
+              ),
+              icon: const Icon(Icons.account_box),
+            ),
           ],
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('username: ${userEntity.username}'),
-            const SizedBox(height: 10),
-            Text('accessToken: ${userEntity.accessToken}'),
-            const SizedBox(height: 10),
-            Text('refreshToken: ${userEntity.refreshToken}'),
-          ],
+          children: const [],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => context.read<AuthCubit>().getProfile(),
