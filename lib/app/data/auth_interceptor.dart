@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_client_it_product/app/data/dio_container.dart';
+
 import 'package:flutter_client_it_product/app/di/init_di.dart';
+import 'package:flutter_client_it_product/app/domain/app_api.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
 
 class AuthInterceptor extends QueuedInterceptor {
@@ -23,10 +24,8 @@ class AuthInterceptor extends QueuedInterceptor {
     if (err.response?.statusCode == 401) {
       try {
         await locator.get<AuthCubit>().refreshToken();
-        final request = await locator
-            .get<DioContainer>()
-            .dio
-            .request(err.requestOptions.path);
+        final request =
+            await locator.get<AppApi>().request(err.requestOptions.path);
         return handler.resolve(request);
       } catch (_) {
         super.onError(err, handler);
