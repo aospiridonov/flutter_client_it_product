@@ -31,7 +31,7 @@ class MainScreen extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => context.read<AuthCubit>().refreshToken(),
+          onPressed: () => context.read<AuthCubit>().getProfile(),
           child: const Icon(Icons.refresh),
         ));
   }
