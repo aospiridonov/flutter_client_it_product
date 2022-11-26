@@ -57,6 +57,16 @@ class AuthCubit extends HydratedCubit<AuthState> {
     }
   }
 
+  void logOut() => emit(AuthState.notAuthorized());
+
+  @override
+  AuthState? fromJson(Map<String, dynamic> json) {
+    final state = AuthState.fromJson(json);
+    return state.whenOrNull(
+      authorized: (userEntity) => AuthState.authorized(userEntity),
+    );
+  }
+
   Future<void> getProfile() async {
     try {
       final UserEntity newUserEntity = await authRepository.getProfile();
@@ -76,14 +86,31 @@ class AuthCubit extends HydratedCubit<AuthState> {
     }
   }
 
-  void logOut() => emit(AuthState.notAuthorized());
-
-  @override
-  AuthState? fromJson(Map<String, dynamic> json) {
-    final state = AuthState.fromJson(json);
-    return state.whenOrNull(
-      authorized: (userEntity) => AuthState.authorized(userEntity),
-    );
+  Future<void> userUpdate({
+    String? username,
+    String? email,
+  }) async {
+    try {
+      final bool isEmptyEmail = email?.trim().isEmpty ?? true;
+      final bool isEmptyUsername = username?.trim().isEmpty ?? true;
+      final UserEntity newUserEntity = await authRepository.userUpdate(
+        username: isEmptyUsername ? null : username,
+        email: isEmptyEmail ? null : email,
+      );
+      emit(
+        state.maybeWhen(
+          orElse: () => state,
+          authorized: (userEntity) => AuthState.authorized(
+            userEntity.copyWith(
+              email: newUserEntity.email,
+              username: newUserEntity.username,
+            ),
+          ),
+        ),
+      );
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+    }
   }
 
   @override

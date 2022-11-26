@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_client_it_product/app/presentation/components/app_text_button.dart';
+import 'package:flutter_client_it_product/app/presentation/components/app_text_field.dart';
 
 import '../domain/auth_state/auth_cubit.dart';
 
@@ -53,7 +55,12 @@ class UserScreen extends StatelessWidget {
                       child: const Text('Update password'),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const _UserUpdateDialog(),
+                        );
+                      },
                       child: const Text('Update data'),
                     ),
                   ],
@@ -63,6 +70,52 @@ class UserScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _UserUpdateDialog extends StatefulWidget {
+  const _UserUpdateDialog({Key? key}) : super(key: key);
+
+  @override
+  State<_UserUpdateDialog> createState() => __UserUpdateDialogState();
+}
+
+class __UserUpdateDialogState extends State<_UserUpdateDialog> {
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    usernameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              AppTextField(
+                  controller: usernameController, labelText: 'username'),
+              const SizedBox(height: 16),
+              AppTextField(controller: emailController, labelText: 'email'),
+              const SizedBox(height: 16),
+              AppTextButton(
+                  onPressed: () {
+                    context.read<AuthCubit>().userUpdate(
+                        username: usernameController.text,
+                        email: emailController.text);
+                  },
+                  text: 'Apply'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
