@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_client_it_product/app/domain/error_entity/error_entity.dart';
+import 'package:flutter_client_it_product/app/presentation/app_loader.dart';
+import 'package:flutter_client_it_product/app/presentation/components/app_snack_bar.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_button.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_field.dart';
 
@@ -23,10 +26,28 @@ class UserScreen extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<AuthCubit, AuthState>(
+      body: BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          state.whenOrNull(
+            authorized: (userEntity) {
+              if (userEntity.userState?.hasData == true) {
+                AppSnackBar.showSnackBarWithMessage(
+                    context, userEntity.userState?.data);
+              }
+              if (userEntity.userState?.hasError == true) {
+                AppSnackBar.showSnackBarWithError(context,
+                    ErrorEntity.fromException(userEntity.userState?.error));
+              }
+            },
+          );
+        },
         builder: (context, state) {
           final userEntity =
               state.whenOrNull(authorized: (userEntity) => userEntity);
+          if (userEntity?.userState?.connectionState ==
+              ConnectionState.waiting) {
+            return const AppLoader();
+          }
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -51,7 +72,13 @@ class UserScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) =>
+                              const _UserUpdatePasswordDialog(),
+                        );
+                      },
                       child: const Text('Update password'),
                     ),
                     TextButton(
@@ -107,9 +134,59 @@ class __UserUpdateDialogState extends State<_UserUpdateDialog> {
               const SizedBox(height: 16),
               AppTextButton(
                   onPressed: () {
+                    Navigator.pop(context);
                     context.read<AuthCubit>().userUpdate(
                         username: usernameController.text,
                         email: emailController.text);
+                  },
+                  text: 'Apply'),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UserUpdatePasswordDialog extends StatefulWidget {
+  const _UserUpdatePasswordDialog({Key? key}) : super(key: key);
+
+  @override
+  State<_UserUpdatePasswordDialog> createState() =>
+      __UserUpdatePasswordDialogState();
+}
+
+class __UserUpdatePasswordDialogState extends State<_UserUpdatePasswordDialog> {
+  final newPasswordController = TextEditingController();
+  final oldPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    oldPasswordController.dispose();
+    newPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              AppTextField(
+                  controller: oldPasswordController, labelText: 'old password'),
+              const SizedBox(height: 16),
+              AppTextField(
+                  controller: newPasswordController, labelText: 'new password'),
+              const SizedBox(height: 16),
+              AppTextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    context.read<AuthCubit>().passwordUpdate(
+                        oldPassword: oldPasswordController.text,
+                        newPassword: newPasswordController.text);
                   },
                   text: 'Apply'),
             ],

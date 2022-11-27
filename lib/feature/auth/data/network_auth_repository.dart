@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_client_it_product/app/domain/app_api.dart';
 import 'package:flutter_client_it_product/feature/auth/data/dto/user_dto.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
@@ -18,13 +19,6 @@ class NetworkAuthRepository implements AuthRepository {
     } catch (_) {
       rethrow;
     }
-  }
-
-  @override
-  Future passwordUpdate(
-      {required String oldPassword, required String newPassword}) {
-    // TODO: implement passwordUpdate
-    throw UnimplementedError();
   }
 
   @override
@@ -68,6 +62,18 @@ class NetworkAuthRepository implements AuthRepository {
     try {
       final response = await api.userUpdate(username: username, email: email);
       return UserDto.fromJson(response.data['data']).toEntity();
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> passwordUpdate(
+      {required String oldPassword, required String newPassword}) async {
+    try {
+      final Response response = await api.passwordUpdate(
+          oldPassword: oldPassword, newPassword: newPassword);
+      return response.data['message'];
     } catch (_) {
       rethrow;
     }

@@ -29,13 +29,6 @@ class DioAppApi implements AppApi {
   }
 
   @override
-  Future<Response> passwordUpdate(
-      {required String oldPassword, required String newPassword}) {
-    // TODO: implement passwordUpdate
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Response> refreshToken({String? refreshToken}) {
     try {
       return dio.post('/auth/token/$refreshToken');
@@ -79,6 +72,19 @@ class DioAppApi implements AppApi {
       return dio.post('/auth/user', data: {
         'username': username,
         'email': email,
+      });
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response> passwordUpdate(
+      {required String oldPassword, required String newPassword}) {
+    try {
+      return dio.put('/auth/user', queryParameters: {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
       });
     } catch (_) {
       rethrow;
