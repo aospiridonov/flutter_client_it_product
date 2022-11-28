@@ -5,6 +5,7 @@ import 'package:flutter_client_it_product/app/presentation/app_loader.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_snack_bar.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_button.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_field.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/state/cubit/post_cubit.dart';
 
 import '../domain/auth_state/auth_cubit.dart';
 

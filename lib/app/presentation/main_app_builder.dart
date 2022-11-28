@@ -31,7 +31,8 @@ class _GlobalProviders extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              PostCubit(locator.get<PostRepository>())..fetchPosts(),
+              PostCubit(locator.get<PostRepository>(), locator.get<AuthCubit>())
+                ..fetchPosts(),
         ),
       ],
       child: child,
