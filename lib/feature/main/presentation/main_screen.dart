@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
 import 'package:flutter_client_it_product/feature/auth/presentation/user_screen.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/state/cubit/post_cubit.dart';
+import 'package:flutter_client_it_product/feature/posts/presentation/post_list.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key, required this.userEntity}) : super(key: key);
@@ -26,12 +28,10 @@ class MainScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [],
-        ),
+        body: const PostList(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => context.read<AuthCubit>().getProfile(),
+          //onPressed: () => context.read<AuthCubit>().getProfile(),
+          onPressed: () => context.read<PostCubit>().fetchPosts(),
           child: const Icon(Icons.refresh),
         ));
   }

@@ -1,6 +1,6 @@
-import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
-import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
+// import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
+// import 'package:injectable/injectable.dart';
 
 // @Injectable(as: AuthRepository)
 // @test

@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/app/domain/error_entity/error_entity.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';

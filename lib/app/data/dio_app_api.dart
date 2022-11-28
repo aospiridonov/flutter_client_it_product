@@ -99,4 +99,14 @@ class DioAppApi implements AppApi {
       rethrow;
     }
   }
+
+  @override
+  Future fetch(RequestOptions requestOptions) {
+    return dio.fetch(requestOptions);
+  }
+
+  @override
+  Future fetchPosts() {
+    return dio.get('/data/posts');
+  }
 }

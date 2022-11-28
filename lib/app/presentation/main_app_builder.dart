@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/app/di/init_di.dart';
 import 'package:flutter_client_it_product/app/domain/app_builder.dart';
 import 'package:flutter_client_it_product/app/presentation/root_screen.dart';
-import 'package:flutter_client_it_product/feature/auth/domain/auth_repository.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/post_repository.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/state/cubit/post_cubit.dart';
 
 class MainAppBuilder implements AppBuilder {
   @override
@@ -27,6 +28,10 @@ class _GlobalProviders extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => locator.get<AuthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              PostCubit(locator.get<PostRepository>())..fetchPosts(),
         ),
       ],
       child: child,
