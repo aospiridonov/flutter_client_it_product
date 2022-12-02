@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_client_it_product/app/presentation/components/app_dialog.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:flutter_client_it_product/feature/auth/domain/entities/user_entity/user_entity.dart';
 import 'package:flutter_client_it_product/feature/auth/presentation/user_screen.dart';
@@ -17,6 +18,20 @@ class MainScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('MainScreen'),
           actions: [
+            IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AppDialog(
+                          val1: "name",
+                          val2: "content",
+                          onPressed: ((v1, v2) {
+                            //
+                          }),
+                        ));
+              },
+              icon: const Icon(Icons.email),
+            ),
             IconButton(
               onPressed: () => Navigator.push(
                 context,

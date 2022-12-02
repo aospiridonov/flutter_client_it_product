@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_client_it_product/app/domain/error_entity/error_entity.dart';
 import 'package:flutter_client_it_product/app/presentation/app_loader.dart';
+import 'package:flutter_client_it_product/app/presentation/components/app_dialog.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_snack_bar.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_button.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_text_field.dart';
@@ -76,8 +77,15 @@ class UserScreen extends StatelessWidget {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) =>
-                              const _UserUpdatePasswordDialog(),
+                          builder: (context) => AppDialog(
+                            val1: 'old password',
+                            val2: 'new password',
+                            onPressed: ((oldPassword, newPassword) =>
+                                context.read<AuthCubit>().passwordUpdate(
+                                      oldPassword: oldPassword,
+                                      newPassword: newPassword,
+                                    )),
+                          ),
                         );
                       },
                       child: const Text('Update password'),
@@ -86,7 +94,15 @@ class UserScreen extends StatelessWidget {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => const _UserUpdateDialog(),
+                          builder: (context) => AppDialog(
+                            val1: 'username',
+                            val2: 'email',
+                            onPressed: ((username, email) =>
+                                context.read<AuthCubit>().userUpdate(
+                                      username: username,
+                                      email: email,
+                                    )),
+                          ),
                         );
                       },
                       child: const Text('Update data'),
@@ -98,102 +114,6 @@ class UserScreen extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class _UserUpdateDialog extends StatefulWidget {
-  const _UserUpdateDialog({Key? key}) : super(key: key);
-
-  @override
-  State<_UserUpdateDialog> createState() => __UserUpdateDialogState();
-}
-
-class __UserUpdateDialogState extends State<_UserUpdateDialog> {
-  final emailController = TextEditingController();
-  final usernameController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    usernameController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialog(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              AppTextField(
-                  controller: usernameController, labelText: 'username'),
-              const SizedBox(height: 16),
-              AppTextField(controller: emailController, labelText: 'email'),
-              const SizedBox(height: 16),
-              AppTextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    context.read<AuthCubit>().userUpdate(
-                        username: usernameController.text,
-                        email: emailController.text);
-                  },
-                  text: 'Apply'),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _UserUpdatePasswordDialog extends StatefulWidget {
-  const _UserUpdatePasswordDialog({Key? key}) : super(key: key);
-
-  @override
-  State<_UserUpdatePasswordDialog> createState() =>
-      __UserUpdatePasswordDialogState();
-}
-
-class __UserUpdatePasswordDialogState extends State<_UserUpdatePasswordDialog> {
-  final newPasswordController = TextEditingController();
-  final oldPasswordController = TextEditingController();
-
-  @override
-  void dispose() {
-    oldPasswordController.dispose();
-    newPasswordController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialog(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              AppTextField(
-                  controller: oldPasswordController, labelText: 'old password'),
-              const SizedBox(height: 16),
-              AppTextField(
-                  controller: newPasswordController, labelText: 'new password'),
-              const SizedBox(height: 16),
-              AppTextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    context.read<AuthCubit>().passwordUpdate(
-                        oldPassword: oldPasswordController.text,
-                        newPassword: newPasswordController.text);
-                  },
-                  text: 'Apply'),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
