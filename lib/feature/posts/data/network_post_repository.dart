@@ -1,4 +1,5 @@
 import 'package:flutter_client_it_product/app/domain/app_api.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/entities/post/post_entity.dart';
 import 'package:flutter_client_it_product/feature/posts/domain/post_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,6 +14,16 @@ class NetworPostRepository implements PostRepository {
     try {
       final response = await api.fetchPosts();
       return response.data;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostEntity> fetchPost(String id) async {
+    try {
+      final response = await api.fetchPost(id);
+      return PostEntity.fromJson(response.data['data']);
     } catch (_) {
       rethrow;
     }
