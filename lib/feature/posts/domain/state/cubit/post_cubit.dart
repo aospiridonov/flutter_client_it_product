@@ -27,6 +27,7 @@ class PostCubit extends HydratedCubit<PostState> {
   late final StreamSubscription authSubscription;
 
   Future<void> fetchPosts() async {
+    emit(state.copyWith(asyncSnapshot: const AsyncSnapshot.waiting()));
     await postRepository.fetchPosts().then((value) {
       final Iterable iterable = value;
       emit(state.copyWith(
@@ -38,17 +39,25 @@ class PostCubit extends HydratedCubit<PostState> {
     });
   }
 
-  @override
-  void addError(Object error, [StackTrace? stackTrace]) {
-    emit(state.copyWith(
-        asyncSnapshot: AsyncSnapshot.withError(ConnectionState.done, error)));
-    super.addError(error, stackTrace);
+  Future<void> createPost(Map args) async {
+    await postRepository.createPost(args).then((value) {
+      fetchPosts();
+    }).catchError((error) {
+      addError(error);
+    });
   }
 
   void logOut() => emit(state.copyWith(
         asyncSnapshot: const AsyncSnapshot.nothing(),
         postList: [],
       ));
+
+  @override
+  void addError(Object error, [StackTrace? stackTrace]) {
+    emit(state.copyWith(
+        asyncSnapshot: AsyncSnapshot.withError(ConnectionState.done, error)));
+    super.addError(error, stackTrace);
+  }
 
   @override
   PostState? fromJson(Map<String, dynamic> json) {

@@ -23,10 +23,13 @@ class MainScreen extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (context) => AppDialog(
-                          val1: "name",
-                          val2: "content",
+                          val1: 'name',
+                          val2: 'content',
                           onPressed: ((v1, v2) {
-                            //
+                            context.read<PostCubit>().createPost({
+                              'name': v1,
+                              'content': v2,
+                            });
                           }),
                         ));
               },
