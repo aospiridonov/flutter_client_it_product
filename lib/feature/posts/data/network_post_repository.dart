@@ -30,6 +30,15 @@ class NetworPostRepository implements PostRepository {
   }
 
   @override
+  Future deletePost(String id) async {
+    try {
+      await api.deletePost(id);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<String> createPost(Map args) async {
     try {
       final response = await api.createPost(args);

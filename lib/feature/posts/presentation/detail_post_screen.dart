@@ -6,6 +6,7 @@ import 'package:flutter_client_it_product/app/presentation/app_loader.dart';
 import 'package:flutter_client_it_product/app/presentation/components/app_snack_bar.dart';
 import 'package:flutter_client_it_product/feature/posts/domain/entities/post/post_entity.dart';
 import 'package:flutter_client_it_product/feature/posts/domain/post_repository.dart';
+import 'package:flutter_client_it_product/feature/posts/domain/state/cubit/post_cubit.dart';
 import 'package:flutter_client_it_product/feature/posts/domain/state/detail_post/detail_post_cubit.dart';
 
 class DetailPostScreen extends StatelessWidget {
@@ -29,19 +30,38 @@ class _DetailPostView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              context.read<DetailPostCubit>().deletePost().then((_) {
+                context.read<PostCubit>().fetchPosts();
+                Navigator.of(context).pop();
+              });
+            },
+            icon: const Icon(Icons.delete),
+          )
+        ],
+      ),
       body: BlocConsumer<DetailPostCubit, DetailPostState>(
           builder: (context, state) {
-        if (state.postEntity != null) {
-          return _DetailPostItem(postEntity: state.postEntity!);
-        }
         if (state.asyncSnapshot.connectionState == ConnectionState.waiting) {
           return const AppLoader();
         }
+
+        if (state.postEntity != null) {
+          return _DetailPostItem(postEntity: state.postEntity!);
+        }
+
         return const Center(
           child: Text('Data error'),
         );
       }, listener: (context, state) {
+        if (state.asyncSnapshot.hasData) {
+          AppSnackBar.showSnackBarWithMessage(
+              context, state.asyncSnapshot.data.toString());
+        }
+
         if (state.asyncSnapshot.hasError) {
           AppSnackBar.showSnackBarWithError(
               context, ErrorEntity.fromException(state.asyncSnapshot.error));
